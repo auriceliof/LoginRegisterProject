@@ -22,7 +22,7 @@ export function Login() {
           id="password"
           type="password"
           name="password"
-          autoComplete="email"
+          autoComplete="current-password"
           register={() => {}}
           error="Erro"
         />
