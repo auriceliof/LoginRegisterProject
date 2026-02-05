@@ -1,11 +1,29 @@
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
 
 export function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+  });
+
+  const onSubmit = (data)=> {
+    console.log(data);
+
+    alert("Conta criada com sucesso");
+
+    reset();
+  }
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form className="bg-white p-8 rounded-2xl shadow-md w-96">
+      <form className="bg-white p-8 rounded-2xl shadow-md w-96" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
 
         <InputField
@@ -14,7 +32,8 @@ export function Register() {
           type="text"
           name="name"
           autoComplete="username"
-          register={() => {}}
+          register={register}
+          error={errors.name}
         />
 
         <InputField
@@ -23,7 +42,8 @@ export function Register() {
           type="email"
           name="email"
           autoComplete="email"
-          register={() => {}}
+          register={register}
+          error={errors.email}
         />
 
         <InputField
@@ -32,7 +52,8 @@ export function Register() {
           type="password"
           name="password"
           autoComplete="new-password"
-          register={() => {}}
+          register={register}
+          error={errors.password}
         />
 
         <InputField
@@ -41,7 +62,8 @@ export function Register() {
           type="password"
           name="confirmPassword"
           autoComplete="new-password"
-          register={() => {}}
+          register={register}
+          error={errors.confirmPassowrd}
         />
 
         <button
