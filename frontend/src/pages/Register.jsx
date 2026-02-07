@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputField } from "../components/InputField";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -19,6 +19,20 @@ const schema = yup.object({
 });
 
 export function Register() {
+  const [message, setMessage] = useState("");
+
+  //Hook de navegação entre páginas
+  const navigate = useNavigate();
+
+  //Hook para acessar dados de rota anterior/atuais
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setMessage(location.state.message);
+    }
+  }, [location]);
+
   const {
     register,
     handleSubmit,
@@ -30,11 +44,25 @@ export function Register() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    //Recupera os usuários salvos no localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    //Verificar se o email já registrado
+    const exists = users.find((user) => user.email === data.email);
+    if (exists) {
+      //Se já existir, exibe uma mensagem de erro e interrompe o cadastro
+      setMessage("Email já está cadastrado");
+      return;
+    }
 
-    alert("Conta criada com sucesso");
+    //Adicionar o novo usuário
+    users.push({ name: data.name, email: data.email, password: data.password });
 
-    reset();
+    // Salvar a lista atualizada no localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    //Exibe alerta de sucesso e redirecionar para a tela de login
+    alert("Conta criada com sucesso!");
+    navigate("/login");
   };
 
   return (
@@ -44,6 +72,8 @@ export function Register() {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+
+        {message && <p className="text-red-500">{message}</p>}
 
         <InputField
           label="Nome"
