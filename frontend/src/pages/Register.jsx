@@ -37,7 +37,6 @@ export function Register() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
     resolver: yupResolver(schema),
