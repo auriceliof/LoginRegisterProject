@@ -49,9 +49,9 @@ export function Login() {
 
     if (user) {
       //Se existir rediriciona p página principal/HOME
-      setMessage("");
-      alert("Login realizo com sucesso!");
-      navigate("/");
+      //setMessage("");
+      //alert("Login realizo com sucesso!");
+      navigate("/home");
     } else {
       // não existe - redirecionar para tela registro uma mensagem
       navigate("/register", {
@@ -59,7 +59,7 @@ export function Login() {
       });
     }
 
-    reset();
+    //reset();
   };
 
   return (
